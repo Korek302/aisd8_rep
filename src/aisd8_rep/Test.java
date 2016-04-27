@@ -34,17 +34,20 @@ public class Test
 		System.out.println("Average number of comparisons: "+(sum1 / 10));
 		
 		System.out.println("pre-order: ");
-		bst.preOrder(bst.root);
+		bst.preOrderPrint(bst.root);
 		System.out.println("\nin-order: ");
-		bst.inOrder(bst.root);
+		bst.inOrderPrint(bst.root);
 		System.out.println("\npost-order: ");
-		bst.postOrder(bst.root);
+		bst.postOrderPrint(bst.root);
+		System.out.println("\nlevel-order: ");
+		bst.levelOrderPrint(bst.root);
 		
 		int temp = rand.nextInt(size);
 		System.out.println("\nsearched number: " + temp);
 		System.out.println("pre-order search: "+bst.findPreOrder(temp));
 		System.out.println("in-order search: "+bst.findInOrder(temp));
 		System.out.println("post-order search: "+bst.findPostOrder(temp));
+		System.out.println("level-order search: "+bst.findLevelOrder(temp));
 		
 		bst.DSW();
 		
@@ -62,15 +65,18 @@ public class Test
 		System.out.println("Average number of comparisons: "+(sum2 / 10));
 		
 		System.out.println("pre-order: ");
-		bst.preOrder(bst.root);
+		bst.preOrderPrint(bst.root);
 		System.out.println("\nin-order: ");
-		bst.inOrder(bst.root);
+		bst.inOrderPrint(bst.root);
 		System.out.println("\npost-order: ");
-		bst.postOrder(bst.root);
+		bst.postOrderPrint(bst.root);
+		System.out.println("\nlevel-order: ");
+		bst.levelOrderPrint(bst.root);
 		
 		System.out.println("\nsearched number: " + temp);
 		System.out.println("pre-order search: "+bst.findPreOrder(temp));
 		System.out.println("in-order search: "+bst.findInOrder(temp));
 		System.out.println("post-order search: "+bst.findPostOrder(temp));
+		System.out.println("level-order search: "+bst.findLevelOrder(temp));
 	}
 }

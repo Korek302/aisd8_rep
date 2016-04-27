@@ -1,65 +1,14 @@
 package aisd8_rep;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
+
 public class BST implements Tree
 {
 	Node root;
 	int counter = 0;
-	
 	int searched = -1;
 	
-	//pre-order search
-	public void preOrderSearch(int value, Node node)
-	{
-		if(value == node.value.age)
-			searched = value;
-		if(node.left != null)
-			preOrderSearch(value, node.left);
-		if(node.right != null)
-			preOrderSearch(value, node.right);
-	}
-	
-	public Object findPreOrder(int x)
-	{
-		searched = -1;
-		preOrderSearch(x, root);
-		return searched == -1 ? null : searched;
-	}
-	
-	//in-order search
-	public void inOrderSearch(int value, Node node)
-	{
-		if(node.left != null)
-			inOrderSearch(value, node.left);
-		if(value == node.value.age)
-			searched = value;
-		if(node.right != null)
-			inOrderSearch(value, node.right);
-	}
-	
-	public Object findInOrder(int x)
-	{
-		searched = -1;
-		inOrderSearch(x, root);
-		return searched == -1 ? null : searched;
-	}
-	
-	//post-order search
-	public void postOrderSearch(int value, Node node)
-	{
-		if(node.left != null)
-			postOrderSearch(value, node.left);
-		if(node.right != null)
-			postOrderSearch(value, node.right);
-		if(value == node.value.age)
-			searched = value;
-	}
-	
-	public Object findPostOrder(int x)
-	{
-		searched = -1;
-		postOrderSearch(x, root);
-		return searched == -1 ? null : searched;
-	}
 	
 	private Node search(int value)
 	{
@@ -153,8 +102,7 @@ public class BST implements Tree
 		root = delete(x, root);
 	}
 	
-	
-	
+	//dsw
 	public void DSW()
 	{
 		if (null != root)
@@ -170,10 +118,10 @@ public class BST implements Tree
 		Node parent = root;
 		Node leftChild;
 		 
-		while (null != parent)
+		while (parent != null)
 		{
 			leftChild = parent.left;
-		    if (null != leftChild)
+		    if (leftChild != null)
 		    {
 		    	grandParent = rotateRight(grandParent, parent, leftChild);
 		    	parent = leftChild;
@@ -188,7 +136,7 @@ public class BST implements Tree
 	
 	private Node rotateRight(Node grandParent, Node parent, Node leftChild)
 	{
-		if (null != grandParent)
+		if (grandParent != null)
 		{
 			grandParent.right = leftChild;
 		}
@@ -200,38 +148,19 @@ public class BST implements Tree
 		leftChild.right = parent;
 		return grandParent;
 	}
-		 
-	private void createPerfectBST()
+	
+	private void rotateLeft(Node grandParent, Node parent, Node rightChild)
 	{
-		int n = 0;
-		for (Node tmp = root; null != tmp; tmp = tmp.right)
+		if (grandParent != null)
 		{
-			n++;
+			grandParent.right = rightChild;
 		}
-		int m = greatestPowerOf2LessThanN(n + 1) - 1;
-		makeRotations(n - m);
-		 
-		while (m > 1)
+		else
 		{
-			makeRotations(m /= 2);
+			root = rightChild;
 		}
-	}
-		 
-	private int greatestPowerOf2LessThanN(int n)
-	{
-		int x = MSB(n);//MSB
-		return (1 << x);//2^x
-	}
-
-	public int MSB(int n)
-	{
-		int ndx = 0;
-		while (1 < n)
-		{
-			n = (n >> 1);
-		    ndx++;
-		}
-		return ndx;
+		parent.right = rightChild.left;
+		rightChild.left = parent;
 	}
 		 
 	private void makeRotations(int bound)
@@ -243,7 +172,7 @@ public class BST implements Tree
 		{
 			try
 			{
-				if (null != child)
+				if (child != null)
 				{
 					rotateLeft(grandParent, parent, child);
 					grandParent = child;
@@ -260,49 +189,162 @@ public class BST implements Tree
 		    }
 		}
 	}
+	
+	private int greatestPowerOf2LessThanN(int n)
+	{
+		int result = 2;
+		int power = 0;
+		while(power < n)
+		{
+			result = 2^power;
+			power++;
+		}
+		return result;
+	}
 		 
-	private void rotateLeft(Node grandParent, Node parent, Node rightChild)
+	private void createPerfectBST()
 	{
-		if (null != grandParent)
+		int n = 0;
+		for (Node temp = root; temp != null; temp = temp.right)
 		{
-			grandParent.right = rightChild;
+			n++;
 		}
-		else
+		int m = greatestPowerOf2LessThanN(n + 1) - 1;
+		makeRotations(n - m);
+		 
+		while (m > 1)
 		{
-			root = rightChild;
+			makeRotations(m /= 2);
 		}
-		parent.right = rightChild.left;
-		rightChild.left = parent;
 	}
 	
-	
-	public void preOrder(Node root)
+
+	//pre-order
+	public void preOrderSearch(int value, Node node)
 	{
-		System.out.print(root.value);
-		if(root.left != null)
-			preOrder(root.left);
-		if(root.right != null)
-			preOrder(root.right);
+		if(value == node.value.age)
+			searched = value;
+		if(node.left != null)
+			preOrderSearch(value, node.left);
+		if(node.right != null)
+			preOrderSearch(value, node.right);
 	}
 	
-	public void inOrder(Node root)
+	public Object findPreOrder(int value)
 	{
-		if(root.left != null)
-			preOrder(root.left);
-		System.out.print(root.value);
-		if(root.right != null)
-			preOrder(root.right);
+		searched = -1;
+		preOrderSearch(value, root);
+		return searched == -1 ? null : searched;
 	}
 	
-	public void postOrder(Node root)
+	public void preOrderPrint(Node node)
 	{
-		if(root.left != null)
-			preOrder(root.left);
-		if(root.right != null)
-			preOrder(root.right);
-		System.out.print(root.value);
+		System.out.print(node.value);
+		if(node.left != null)
+			preOrderPrint(node.left);
+		if(node.right != null)
+			preOrderPrint(node.right);
 	}
 	
+	//in-order
+	public void inOrderSearch(int value, Node node)
+	{
+		if(node.left != null)
+			inOrderSearch(value, node.left);
+		if(value == node.value.age)
+			searched = value;
+		if(node.right != null)
+			inOrderSearch(value, node.right);
+	}
+	
+	public Object findInOrder(int value)
+	{
+		searched = -1;
+		inOrderSearch(value, root);
+		return searched == -1 ? null : searched;
+	}
+	
+	public void inOrderPrint(Node node)
+	{
+		if(node.left != null)
+			inOrderPrint(node.left);
+		System.out.print(node.value);
+		if(node.right != null)
+			inOrderPrint(node.right);
+	}
+	
+	//post-order
+	public void postOrderSearch(int value, Node node)
+	{
+		if(node.left != null)
+			postOrderSearch(value, node.left);
+		if(node.right != null)
+			postOrderSearch(value, node.right);
+		if(value == node.value.age)
+			searched = value;
+	}
+	
+	public Object findPostOrder(int value)
+	{
+		searched = -1;
+		postOrderSearch(value, root);
+		return searched == -1 ? null : searched;
+	}
+	
+	public void postOrderPrint(Node node)
+	{
+		if(node.left != null)
+			postOrderPrint(node.left);
+		if(node.right != null)
+			postOrderPrint(node.right);
+		System.out.print(node.value);
+	}
+	
+	//level-order
+	public void levelOrderSearch(int value, Node node)
+	{
+        if(node == null)
+        	;
+        Queue<Node> queue = new ArrayDeque<Node>();
+        queue.add(node);
+        while(!queue.isEmpty())
+        {
+            Node current = queue.peek();
+            if (current.left != null)
+                queue.add(current.left);
+            if (current.right != null)
+                queue.add(current.right);
+            if(value ==  queue.poll().value.age)
+            {
+            	searched = value;
+            }
+        }
+    }
+	
+	public Object findLevelOrder(int value)
+	{
+		searched = -1;
+		levelOrderSearch(value, root);
+		return searched == -1 ? null : searched;
+	}
+	
+	public void levelOrderPrint(Node root)
+	{
+        if(root == null)
+        	;
+        Queue<Node> queue = new ArrayDeque<Node>();
+        queue.add(root);
+        while(!queue.isEmpty())
+        {
+            Node current = queue.peek();
+            System.out.print(current.value);
+            if (current.left != null)
+                queue.add(current.left);
+            if (current.right != null)
+                queue.add(current.right);
+            queue.poll();
+        }
+    }
 	
 	private String indent(int s)
 	{
@@ -312,13 +354,13 @@ public class BST implements Tree
 	    return result;
 	  }
 
-	private String print(Node x, int depth)
+	private String print(Node node, int depth)
 	{
-		if (x == null)
+		if (node == null)
 			return "";
 		else
-			return print(x.right, depth + 1) + indent(depth) + x.toString() + "\n"
-		+ print(x.left, depth + 1);
+			return print(node.right, depth + 1) + indent(depth) + node.toString() + "\n"
+		+ print(node.left, depth + 1);
 	  }
 	
 	public String toString()
